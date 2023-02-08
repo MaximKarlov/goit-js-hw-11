@@ -1,3 +1,5 @@
+import simpleLightBox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.css';
 import API from './Api_query';
 import Notiflix from 'notiflix';
 
@@ -30,29 +32,32 @@ async function onSubmit(e) {
       } else {
         Notiflix.Notify.success(`"Hooray! We found ${totalHits} images."`);
         loadBtnUrl.classList.remove('hide-btn');
-        for (const key in hits) {
-          createMarkupChoises(hits[key]);
-        }
+        createMarkupChoises(hits);
+        Simpl();
       }
     })
     .catch(Errors => onError(Errors))
     .finally(() => formUrl.reset());
 }
 
-function createMarkupChoises({
-  webformatURL,
-  largeImageURL,
-  tags,
-  likes,
-  views,
-  comments,
-  downloads,
-}) {
-  return galleryListUrl.insertAdjacentHTML(
-    'beforeend',
-    `<div class="photo-card">
+function createMarkupChoises(images) {
+  const markup = images
+    .map(image => {
+      const {
+        id,
+        largeImageURL,
+        webformatURL,
+        tags,
+        likes,
+        views,
+        comments,
+        downloads,
+      } = image;
+      return `
 
-        <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+      <div class="photo-card">
+        <a  href="${largeImageURL}" title= " caption">
+        <img src="${webformatURL}" alt="${tags}" loading="lazy" /></a>
         <div class="info">
           <p class="info-item">
             <b>Likes</b>
@@ -71,9 +76,11 @@ function createMarkupChoises({
             ${downloads}
           </p>
         </div>
-    </div>`
-  );
-  // <a  href="${largeImageURL}" title= " caption">
+    </div>
+`;
+    })
+    .join('');
+  return galleryListUrl.insertAdjacentHTML('beforeend', markup);
 }
 
 function onLoadMore() {
@@ -81,9 +88,8 @@ function onLoadMore() {
     .then(({ hits, totalHits }) => {
       console.log(hits);
       count += hits.length;
-      for (const key in hits) {
-        createMarkupChoises(hits[key]);
-      }
+      createMarkupChoises(hits);
+      Simpl();
       console.log('count: ' + count + 'total hits: ' + totalHits);
       if (count >= totalHits) {
         loadBtnUrl.classList.add('hide-btn');
@@ -97,4 +103,8 @@ function onLoadMore() {
 
 function onError(Error) {
   Notiflix.Notify.failure(Error.message);
+}
+
+function Simpl() {
+  new simpleLightBox('.gallery a').refresh();
 }
