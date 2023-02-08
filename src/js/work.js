@@ -1,5 +1,3 @@
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
 import API from './Api_query';
 import Notiflix from 'notiflix';
 
@@ -8,8 +6,10 @@ const formInputUrl = formUrl.querySelector('[name="searchQuery"]');
 const galleryListUrl = document.querySelector('.gallery');
 const loadBtnUrl = document.querySelector('.load-more');
 
-loadBtnUrl.hidden = true;
+loadBtnUrl.classList.add('hide-btn');
+console.log(loadBtnUrl);
 let inputValue = '';
+let count = 0;
 
 formUrl.addEventListener('submit', onSubmit);
 loadBtnUrl.addEventListener('click', onLoadMore);
@@ -22,13 +22,15 @@ async function onSubmit(e) {
   galleryListUrl.innerHTML = ' ';
 
   getPhoto
-    .then(({ hits }) => {
+    .then(({ hits, totalHits }) => {
+      count += hits.length;
       if (hits.length === 0) {
         throw new Error(
           'Sorry, there are no images matching your search query. Please try again.'
         );
       }
-      loadBtnUrl.hidden = false;
+      Notiflix.Notify.success(`"Hooray! We found ${totalHits} images."`);
+      loadBtnUrl.classList.remove('hide-btn');
       for (const key in hits) {
         createMarkupChoises(hits[key]);
       }
@@ -48,9 +50,9 @@ function createMarkupChoises({
 }) {
   return galleryListUrl.insertAdjacentHTML(
     'beforeend',
-    ` <div class="photo-card">
-      
-        <img src="${webformatURL}" alt="${tags}" loading="lazy" title="" /></a>
+    `<div class="photo-card">
+
+        <img src="${webformatURL}" alt="${tags}" loading="lazy" />
         <div class="info">
           <p class="info-item">
             <b>Likes</b>
@@ -69,29 +71,28 @@ function createMarkupChoises({
             ${downloads}
           </p>
         </div>
-      </div>`
-    // <a href="${largeImageURL}" rel="noopener noreferrer">
+    </div>`
   );
+  // <a  href="${largeImageURL}" title= " caption">
 }
+
 function onLoadMore() {
+  simpleLightBox.destroy();
   API.searchPhoto(inputValue)
-    .then(({ hits }) => {
-      if (hits.length === 0) {
-        throw new Error(
-          'Sorry, there are no images matching your search query. Please try again.'
-        );
-      }
-      loadBtnUrl.hidden = false;
+    .then(({ hits, totalHits }) => {
+      count += hits.length;
       for (const key in hits) {
         createMarkupChoises(hits[key]);
+      }
+      if (count === totalHits) {
+        loadBtnUrl.classList.add('hide-btn');
+        throw new Error(
+          "We're sorry, but you've reached the end of search results."
+        );
       }
     })
     .catch(Errors => onError(Errors));
 }
-// const gallery = new SimpleLightbox('.gallery a', {
-//   captionsData: 'alt',
-//   captionDelay: 500,
-// });
 
 function onError(Error) {
   Notiflix.Notify.failure(Error.message);

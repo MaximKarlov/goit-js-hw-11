@@ -37,6 +37,9 @@ button {
   width: calc(100% / 4 - 20px);
   outline: 2px solid black;
   margin: 20px auto;
+  box-shadow: 10px 10px 10px rgba(87, 83, 83, 0.729);
+  border-bottom-right-radius: 30px 30px;
+  border-bottom-left-radius: 30px 30px;
 }
 
 .photo-card img {
@@ -45,15 +48,23 @@ button {
 }
 .info {
   display: flex;
+  justify-content: space-around;
 }
 .info-item {
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .load-more {
+  justify-content: center;
   display: flex;
   margin: 0 auto;
   margin-bottom: 40px;
+  box-shadow: 4px 4px 10px rgba(81, 79, 79, 0.801);
+}
+.hide-btn {
+  display: none;
 }
