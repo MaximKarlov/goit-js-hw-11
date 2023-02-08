@@ -32,8 +32,7 @@ async function onSubmit(e) {
       } else {
         Notiflix.Notify.success(`"Hooray! We found ${totalHits} images."`);
         loadBtnUrl.classList.remove('hide-btn');
-        createMarkupChoises(hits);
-        Simpl();
+        Simpl(hits);
       }
     })
     .catch(Errors => onError(Errors))
@@ -86,10 +85,9 @@ function createMarkupChoises(images) {
 function onLoadMore() {
   API.searchPhoto(inputValue)
     .then(({ hits, totalHits }) => {
-      console.log(hits);
       count += hits.length;
-      createMarkupChoises(hits);
-      Simpl();
+      // createMarkupChoises(hits);
+      Simpl(hits);
       console.log('count: ' + count + 'total hits: ' + totalHits);
       if (count >= totalHits) {
         loadBtnUrl.classList.add('hide-btn');
@@ -105,6 +103,7 @@ function onError(Error) {
   Notiflix.Notify.failure(Error.message);
 }
 
-function Simpl() {
+function Simpl(hits) {
+  createMarkupChoises(hits);
   new simpleLightBox('.gallery a').refresh();
 }
