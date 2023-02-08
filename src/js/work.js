@@ -7,7 +7,6 @@ const galleryListUrl = document.querySelector('.gallery');
 const loadBtnUrl = document.querySelector('.load-more');
 
 loadBtnUrl.classList.add('hide-btn');
-console.log(loadBtnUrl);
 let inputValue = '';
 let count = 0;
 

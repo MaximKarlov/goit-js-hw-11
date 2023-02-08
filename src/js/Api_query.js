@@ -10,7 +10,6 @@ async function searchPhoto(query) {
     .get(`${ENDPOINT}?key=${KEY}&q=${query}${FILTER}${PER_PAGE}&page=${PAGES}`)
     .then(data => {
       PAGES += 1;
-      console.log(data);
       return data;
     });
 
