@@ -52,7 +52,7 @@ function createMarkupChoises(images) {
       } = image;
       return `
       <div class="photo-card">
-        <a  href="${largeImageURL}" title= " caption">
+        <a href="${largeImageURL}" title= " caption">
         <img src="${webformatURL}" alt="${tags}" loading="lazy" /></a>
         <div class="info">
           <p class="info-item">
@@ -100,5 +100,8 @@ function onError(Error) {
 
 function Simpl(hits) {
   createMarkupChoises(hits);
-  new simpleLightBox('.gallery a').refresh();
+  new simpleLightBox('.gallery a', {
+    captionsData: 'alt',
+    captionDelay: 500,
+  }).refresh();
 }
