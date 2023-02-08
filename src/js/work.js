@@ -84,6 +84,7 @@ function onLoadMore() {
     .then(({ hits, totalHits }) => {
       count += hits.length;
       Simpl(hits);
+      // console.log('hits: ' + count + ' total: ' + totalHits);
       if (count >= totalHits) {
         loadBtnUrl.classList.add('hide-btn');
         throw new Error(
