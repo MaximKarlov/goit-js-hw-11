@@ -18,11 +18,10 @@ loadBtnUrl.addEventListener('click', onLoadMore);
 async function onSubmit(e) {
   e.preventDefault();
   API.newSearchPhoto(1);
-  inputValue = formInputUrl.value.trim();
-  const getPhoto = API.searchPhoto(inputValue);
   galleryListUrl.innerHTML = ' ';
+  inputValue = formInputUrl.value.trim();
 
-  getPhoto
+  API.searchPhoto(inputValue)
     .then(({ hits, totalHits }) => {
       count += hits.length;
       if (hits.length === 0) {
@@ -43,7 +42,6 @@ function createMarkupChoises(images) {
   const markup = images
     .map(image => {
       const {
-        id,
         largeImageURL,
         webformatURL,
         tags,
@@ -53,7 +51,6 @@ function createMarkupChoises(images) {
         downloads,
       } = image;
       return `
-
       <div class="photo-card">
         <a  href="${largeImageURL}" title= " caption">
         <img src="${webformatURL}" alt="${tags}" loading="lazy" /></a>
@@ -79,16 +76,14 @@ function createMarkupChoises(images) {
 `;
     })
     .join('');
-  return galleryListUrl.insertAdjacentHTML('beforeend', markup);
+  galleryListUrl.insertAdjacentHTML('beforeend', markup);
 }
 
 function onLoadMore() {
   API.searchPhoto(inputValue)
     .then(({ hits, totalHits }) => {
       count += hits.length;
-      // createMarkupChoises(hits);
       Simpl(hits);
-      console.log('count: ' + count + 'total hits: ' + totalHits);
       if (count >= totalHits) {
         loadBtnUrl.classList.add('hide-btn');
         throw new Error(
