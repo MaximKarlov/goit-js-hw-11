@@ -34,12 +34,14 @@ button {
 }
 
 .photo-card {
+  overflow: hidden;
   width: calc(100% / 4 - 20px);
   outline: 2px solid black;
   margin: 20px auto;
   box-shadow: 10px 10px 10px rgba(87, 83, 83, 0.729);
   border-bottom-right-radius: 30px 30px;
   border-bottom-left-radius: 30px 30px;
+  transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .photo-card img {
@@ -50,8 +52,9 @@ button {
 .photo-card:hover,
 .photo-card:focus {
   cursor: pointer;
-  transition: all 1s;
+  // transition: all 2s;
   transform: scale(1.4);
+  transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
 }
 .info {
