@@ -27,11 +27,12 @@ async function onSubmit(e) {
         throw new Error(
           'Sorry, there are no images matching your search query. Please try again.'
         );
-      }
-      Notiflix.Notify.success(`"Hooray! We found ${totalHits} images."`);
-      loadBtnUrl.classList.remove('hide-btn');
-      for (const key in hits) {
-        createMarkupChoises(hits[key]);
+      } else {
+        Notiflix.Notify.success(`"Hooray! We found ${totalHits} images."`);
+        loadBtnUrl.classList.remove('hide-btn');
+        for (const key in hits) {
+          createMarkupChoises(hits[key]);
+        }
       }
     })
     .catch(Errors => onError(Errors))
