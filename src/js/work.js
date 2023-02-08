@@ -15,7 +15,7 @@ loadBtnUrl.addEventListener('click', onLoadMore);
 
 async function onSubmit(e) {
   e.preventDefault();
-
+  API.newSearchPhoto(1);
   inputValue = formInputUrl.value.trim();
   const getPhoto = API.searchPhoto(inputValue);
   galleryListUrl.innerHTML = ' ';
@@ -79,11 +79,13 @@ function createMarkupChoises({
 function onLoadMore() {
   API.searchPhoto(inputValue)
     .then(({ hits, totalHits }) => {
+      console.log(hits);
       count += hits.length;
       for (const key in hits) {
         createMarkupChoises(hits[key]);
       }
-      if (count === totalHits) {
+      console.log('count: ' + count + 'total hits: ' + totalHits);
+      if (count >= totalHits) {
         loadBtnUrl.classList.add('hide-btn');
         throw new Error(
           "We're sorry, but you've reached the end of search results."
