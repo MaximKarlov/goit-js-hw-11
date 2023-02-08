@@ -1,5 +1,5 @@
 import simpleLightBox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.css';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 import API from './Api_query';
 import Notiflix from 'notiflix';
 
