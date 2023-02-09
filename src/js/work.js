@@ -8,9 +8,9 @@ const formInputUrl = formUrl.querySelector('[name="searchQuery"]');
 const galleryListUrl = document.querySelector('.gallery');
 const loadBtnUrl = document.querySelector('.load-more');
 
-loadBtnUrl.classList.add('hide-btn');
 let inputValue = '';
 let count = 0;
+loadBtnUrl.classList.add('hide-btn');
 
 formUrl.addEventListener('submit', onSubmit);
 loadBtnUrl.addEventListener('click', onLoadMore);
@@ -19,8 +19,13 @@ async function onSubmit(e) {
   e.preventDefault();
   API.newSearchPhoto(1);
   galleryListUrl.innerHTML = ' ';
+  loadBtnUrl.classList.add('hide-btn');
   inputValue = formInputUrl.value.trim();
-
+  if (formInputUrl.value.length === 0) {
+    return Notiflix.Notify.failure(
+      'Sorry, the search field cannot be empty. Please try again.'
+    );
+  }
   API.searchPhoto(inputValue)
     .then(({ hits, totalHits }) => {
       count += hits.length;
